@@ -1,9 +1,6 @@
 import argparse
 import socket
 import struct
-import dns
-import dns.rdatatype
-import dns.rdataclass
 
         # Useful resources to solve this lab:
         # 1. https://datatracker.ietf.org/doc/html/rfc1034
@@ -91,14 +88,14 @@ def dns_query(type, name, server):
     # Encode the QTYPE and QCLASS
 
     if type == 'A':
-        qtype = dns.rdatatype.A  # Lookup the Resource Record value
+        qtype = 1  # Lookup the Resource Record value
     elif type == 'AAAA':
-        qtype = dns.rdatatype.AAAA    # Lookup the Resource Record value
+        qtype = 28    # Lookup the Resource Record value
     else:
         raise ValueError('Invalid type')
     
 
-    qclass = dns.rdataclass.IN     # Lookup the Resource Record class being requested
+    qclass = 1     # Lookup the Resource Record class being requested
 
         # This is the query we are asking the DNS Server
     question = qname_encoded + struct.pack('!HH', qtype, qclass)
@@ -154,12 +151,12 @@ def dns_query(type, name, server):
         rdata = response_answer[offset:offset+rdlength]
         offset += rdlength
 
-        if type == dns.rdatatype.A: # Lookup Type value
+        if type == 1: # Lookup Type value
             # A record (IPv4 address)
             ipv4 = socket.inet_ntop(socket.AF_INET, rdata)
             print(f'{name} has IPv4 address {ipv4}')
             return ipv4
-        elif type == dns.rdatatype.AAAA: # Lookup Type value
+        elif type == 28: # Lookup Type value
             # AAAA record (IPv6 address)
             ipv6 = socket.inet_ntop(socket.AF_INET6, rdata)
             print(f'{name} has IPv6 address {ipv6}')
