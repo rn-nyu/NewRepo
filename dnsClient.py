@@ -13,7 +13,7 @@ import dns.rdataclass
 def dns_query(type, name, server):
     # Create a UDP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_address = (server, ????) # Enter Port Number
+    server_address = (server, 53) # Enter Port Number
 
     # Create the DNS query
     ID = 0x1234
@@ -146,7 +146,7 @@ def dns_query(type, name, server):
         name = '.'.join(name_parts)
 
         # Parse the type, class, TTL, and RDLENGTH
-        type, cls, ttl, rdlength = struct.unpack('!HHIH', response_answer[offset:offset+????]) # What is the offset value in bytes? Remember 'H' represent 2 bytes, and 'I' represents 4 bytes, we declared '!HHIH'. 
+        type, cls, ttl, rdlength = struct.unpack('!HHIH', response_answer[offset:offset+10]) # What is the offset value in bytes? Remember 'H' represent 2 bytes, and 'I' represents 4 bytes, we declared '!HHIH'.
         
         offset += 1 # Same value as just calculated
 
@@ -157,7 +157,7 @@ def dns_query(type, name, server):
         if type == dns.rdatatype.A: # Lookup Type value
             # A record (IPv4 address)
             ipv4 = socket.inet_ntop(socket.AF_INET, rdata)
-            print(f'{name} has IPv4 address {ipv4}')\
+            print(f'{name} has IPv4 address {ipv4}')
             return ipv4
         elif type == dns.rdatatype.AAAA: # Lookup Type value
             # AAAA record (IPv6 address)
